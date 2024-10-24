@@ -1,4 +1,3 @@
-import ReactQuill from "react-quill";
 
 interface ITaskDetail {
   _id: string;
@@ -10,9 +9,10 @@ interface ITaskDetail {
   updatedAt: string;
 }
 interface ITaskRequest {
-  title: string;
-  description:string;
-  status: boolean
+  title?: string;
+  description?:string;
+  status?: boolean;
+  _id?:string;
 }
 interface ITasksResponse {
   docs: ITaskDetail[];

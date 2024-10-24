@@ -6,6 +6,7 @@ import {
   ITaskRequest,
   ITasksResponse,
 } from "../types/interfaces/api/task.interface";
+import { title } from "process";
 
 const taskApi = createApi("/task");
 
@@ -17,7 +18,6 @@ export const getTasks = async (pageParams?: {
   q?: string;
   sort?: string;
 }): Promise<ITasksResponse> => {
-  console.log("hello");
   const { data } = (await taskApi({
     method: METHODS.GET,
     url: "",
@@ -29,7 +29,6 @@ export const getTasks = async (pageParams?: {
     },
   })) as AxiosResponse<ITasksResponse>;
 
-  console.log(data)
   return data;
 };
 
@@ -58,6 +57,25 @@ export const createTask = async (
     },
     url: "/",
     method: METHODS.POST,
+  })) as AxiosResponse<ITaskDetail>;
+  return data;
+};
+export const updateTask = async (
+  formBody: ITaskRequest
+
+): Promise<ITaskDetail> => {
+  const { data } = (await taskApi({
+    data: {
+      title: formBody.title,
+      description: formBody.description,
+      status:formBody.status
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: `/${formBody._id}`,
+
+    method: METHODS.PATCH,
   })) as AxiosResponse<ITaskDetail>;
   return data;
 };

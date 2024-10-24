@@ -3,24 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link, } from "react-router-dom";
 import "../../styles/dashboard/dashboard.css";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { QueryKeyString } from "../../types/enums/query-key-string.enum";
 import * as toast from "../../utils/toast";
 import { Logger } from "../../utils/logger.util";
 import Pagination from "../../components/pagination";
-import useModal from "../../hooks/useModal";
-import { useCustomMutation } from "../../hooks/useCustomMutation";
 import { ITaskDetail } from "../../types/interfaces/api/task.interface";
-import { deleteTask, getTasks } from "../../api/task";
+import {  getTasks } from "../../api/task";
 import SearchProduct from "../../components/Tasks/SearchNote";
 import FilterByDate from "../../components/Tasks/FilterByDate";
 import TaskCard from "../../components/Dashboard/TaskCard";
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+
 interface cardProps {
   icon: IconDefinition;
   label?: string;
@@ -46,13 +39,10 @@ const Dashboard = () => {
   const [sortByDate, setSortByDate] = useState<string>();
   const [sortType, setSortType] = useState("Descending");
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   const { refetch } = useQuery(
     [QueryKeyString.Task_DATA, currentPage, filterText, sortByDate],
     async () => {
+
       return await getTasks({
         page: currentPage,
         q: filterText,
@@ -77,7 +67,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     refetch().catch(logger.error);
-  }, [currentPage, sortByDate]);
+  }, [currentPage, refetch, sortByDate]);
 
   
   
@@ -91,30 +81,7 @@ const Dashboard = () => {
         >
           <Button onClick={handleDelete}>Delete</Button>
         </Modal> */}
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box >
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Delete Task?
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Are you sure you want to delete this task?
-            </Typography>
-          </Box>
-        </Fade>
-      </Modal>
+     
 
         <div className="greetings">
           Welcome to<span> Tasks</span>,
@@ -128,7 +95,9 @@ const Dashboard = () => {
               filterText={filterText}
             />
           </div>
-          <div className="pageFunction">
+          <div className="pageFunction" style={{
+            marginLeft:'21rem'
+          }}>
             <FilterByDate
               onOrderClick={(e) => {
                 if (e.currentTarget.dataset.value === "createdAt:asc")
@@ -147,11 +116,18 @@ const Dashboard = () => {
               {...task}
             />
           ))}
+          
+        { tasks.length < 8 && (
           <Link to="/task/create-task">
             <Card icon={faPlus} />
           </Link>
+             )
+            }
 
-          <div className="paginationContainer">
+        </div>
+
+        
+        <div className="paginationContainer">
             <Pagination
               className="pagination-bar"
               currentPage={currentPage}
@@ -163,7 +139,6 @@ const Dashboard = () => {
               }}
             />
           </div>
-        </div>
       </div>
     </>
   );

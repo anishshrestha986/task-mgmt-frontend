@@ -48,7 +48,16 @@ body {
     rgba(43, 121, 238, 0.1) 65.42%,
     rgba(43, 121, 238, 0.1) 100%
   );
-  --glass-backdrop: blur(10px);
+
+  
+  --glass-background-modal: linear-gradient(
+    180deg,
+    rgba(43, 121, 238, 0.4) 0%,
+    rgba(43, 121, 238, 0.481) 33.65%,
+    rgba(43, 121, 238, 0.364) 65.42%,
+    rgba(43, 121, 238, 0.429) 100%
+  );
+  --glass-backdrop: blur(20px);
   --grey: #0d2c5a;
   --darkgrey: rgba(31, 55, 91, 0.82);
 }

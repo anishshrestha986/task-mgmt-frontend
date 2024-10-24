@@ -40,6 +40,12 @@
 }
 
 .posted-by {
-  flex: 2;
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.posted-on {
+  flex:1;
+  text-align: right;
   cursor: pointer;
 }

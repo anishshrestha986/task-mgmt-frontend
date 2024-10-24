@@ -37,7 +37,6 @@ export default function ComposeTask() {
       status: false,
     };
 
-    console.log(data);
     createTask(data);
   };
   return (
